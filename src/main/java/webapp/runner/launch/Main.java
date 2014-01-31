@@ -87,6 +87,7 @@ public class Main {
         // initialize the connector
         Connector nioConnector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         nioConnector.setPort(commandLineParams.port);
+        nioConnector.setURIEncoding("UTF-8");
 
 		if (commandLineParams.enableSSL) {
 			nioConnector.setSecure(true);
