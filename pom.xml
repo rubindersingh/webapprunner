@@ -93,11 +93,6 @@
             <version>${tomcat.version}</version>
         </dependency>
         <dependency>
-            <groupId>ru.zinin</groupId>
-            <artifactId>tomcat-redis-session</artifactId>
-            <version>0.5</version>
-        </dependency>
-        <dependency>
             <groupId>com.beust</groupId>
             <artifactId>jcommander</artifactId>
             <version>1.27</version>
@@ -112,19 +107,6 @@
             <artifactId>testng</artifactId>
             <version>6.1.1</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.javakaffee.msm</groupId>
-            <artifactId>memcached-session-manager-tc7</artifactId>
-            <version>1.6.3</version>
-            <exclusions>
-                <!-- JDK 1.6 and above include StAX support by default, including StAX will cause
-                class incompatibility issues in 1.6+ -->
-                <exclusion>
-                    <groupId>stax</groupId>
-                    <artifactId>stax-api</artifactId>
-                </exclusion>
-            </exclusions>            
         </dependency>
     </dependencies>
     <build>

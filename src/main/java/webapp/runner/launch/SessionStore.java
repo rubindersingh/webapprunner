@@ -17,13 +17,7 @@ public class SessionStore {
         if(sessionStore == null){
             return null;
         }
-        if("memcache".equals(sessionStore)){
-            return new MemcacheSessionStore();
-        } else if ("redis".equals(sessionStore)){
-            return new RedisSessionStore();
-        } else {
-            return new SessionStore();
-        }
+        return new SessionStore();
     }
 
     /**
