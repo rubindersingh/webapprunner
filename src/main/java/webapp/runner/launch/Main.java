@@ -79,9 +79,9 @@ public class Main {
         nioConnector.setPort(commandLineParams.port);
         nioConnector.setURIEncoding("UTF-8");
 
-        if (commandLineParams.bindOnInit.equalsIgnoreCase("false")) {
+//        if (commandLineParams.bindOnInit.equalsIgnoreCase("false")) {
             nioConnector.setProperty("bindOnInit", "false");
-        }
+//        }
 
         if (commandLineParams.enableSSL) {
             nioConnector.setSecure(true);
