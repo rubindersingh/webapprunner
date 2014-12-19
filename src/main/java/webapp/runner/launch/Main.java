@@ -80,7 +80,7 @@ public class Main {
         nioConnector.setURIEncoding("UTF-8");
 
 //        if (commandLineParams.bindOnInit.equalsIgnoreCase("false")) {
-            nioConnector.setProperty("bindOnInit", "false");
+//            nioConnector.setProperty("bindOnInit", "false");
 //        }
 
         if (commandLineParams.enableSSL) {
