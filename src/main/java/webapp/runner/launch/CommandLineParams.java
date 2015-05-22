@@ -22,7 +22,7 @@ public class CommandLineParams {
     @Parameter(names = "--port", description = "The port that the server will accept http requests on.")
     public Integer port = 8080;
 
-    @Parameter(names = "--bindOnInit", description = "If set to false, the socket will be bound when the connector is started and unbound when it is stopped.")
+    @Parameter(names = "--bind-on-init", description = "If set to false, the socket will be bound when the connector is started and unbound when it is stopped.")
     public String bindOnInit = "true";
 
     @Parameter(names = "--context-xml", description = "The path to the context xml to use.")
