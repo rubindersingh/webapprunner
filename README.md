@@ -1,6 +1,9 @@
-# Webapp Runner
+# Webapp Runner [![Build Status](https://travis-ci.org/jsimone/webapp-runner.svg?branch=master)](https://travis-ci.org/jsimone/webapp-runner)
 
-Webapp runner is designed to allow you to launch an exploded or compressed war that is on your filesystem into a tomcat container with a simple `java -jar` command.
+Webapp runner is designed to allow you to launch an exploded or compressed war that is on your filesystem into a tomcat container with a simple `java -jar` command. It supports the following version of Tomcat:
+
++  Tomcat 7: [tomcat7](https://github.com/jsimone/webapp-runner/tree/tomcat7) branch
++  Tomcat 8: [master](https://github.com/jsimone/webapp-runner/tree/master) branch
 
 ## Usage
 
@@ -47,7 +50,7 @@ Add the following to your pom.xml:
                               <artifactItem>
                                   <groupId>com.github.jsimone</groupId>
                                   <artifactId>webapp-runner</artifactId>
-                                  <version>7.0.34.1</version>
+                                  <version>8.0.33.0</version>
                                   <destFileName>webapp-runner.jar</destFileName>
                               </artifactItem>
                           </artifactItems>
@@ -85,6 +88,15 @@ To use it add `--session-store redis` to your startup command:
 
 Then make sure that Redis environment variable is available for configuration: REDIS_URL
 
+## Using Tomcat behind a reverse proxy server
+
+If you are using webapp-runner behind a proxy server, you can set the proxy base url within tomcat:
+
+    $ java -jar target/dependency/webapp-runner.jar --proxy-base-url http://example.com  target/<appname>.war
+
+If you pass an HTTPS base url, e.g. https://example.com, secure flag will be automatically added to session cookies. This indicates to the browser that cookies should only be sent over a secure protocol.
+
+
 ## Running your application in Eclipse
 
 Since your application will just be a standard webapp you can still use WTP and the traditional Tomcat integration points to run your application within Eclipse. However the containerless nature of webapp runner allows you to run from within Eclipse in a simpler way.
@@ -98,7 +110,7 @@ Add the following dependency to your pom.xml:
     <dependency>
       <groupId>com.github.jsimone</groupId>
       <artifactId>webapp-runner</artifactId>
-      <version>7.0.34.1</version>
+      <version>8.0.30.1</version>
       <scope>provided</scope>
     </dependency>
 
@@ -118,8 +130,96 @@ Your application should start and you should see the log output in the Eclipse c
 You can stop the application from the red square in the console pane or from the debug perspective. It can be restarted by right-clicking on the project and choosing your new launch configuration from the 'Debug As' menu or from the debug menu in the Eclipse toolbar (the icon with the little bug).
 
 ### Maven Central
-Note: webapp runner is now available in Maven Central. The version scheme has also chanaged to match the version of Tomcat that it relies on. The format is <tomcat version>.<minor webapp runner version>. The latest version is now 7.0.30.x. Versions 0.0.1 to 0.0.7 are still available at http://jsimone.github.com/webapp-runner/repository.
-     
+Note: webapp runner is now available in Maven Central. The version scheme has also chanaged to match the version of
+Tomcat that it relies on. The format is `<tomcat version>.<minor webapp runner version>`.
+Versions 0.0.1 to 0.0.7 are still available at http://jsimone.github.com/webapp-runner/repository.
+
+### Options
+
+```
+$ java -jar webapp-runner.jar --help
+Usage: <main class> [options]
+  Options:
+        --basic-auth-pw                     Password to be used with basic auth.
+                                            Defaults to BASIC_AUTH_PW env variable.
+        --basic-auth-user                   Username to be used with basic auth.
+                                            Defaults to BASIC_AUTH_USER env variable.
+        --compressable-mime-types           Comma delimited list of mime types
+                                            that will be compressed when using GZIP
+                                            compression.
+                                            Default: text/html,text/xml,text/plain,text/css,application/json,application/xml,text/javascript,application/javascript
+        --context-xml                       The path to the context xml to use.
+        --enable-basic-auth                 Secure the app with basic auth. Use
+                                            with --basic-auth-user and
+                                            --basic-auth-pw or --tomcat-users-location
+                                            Default: false
+        --enable-client-auth                Specify -Djavax.net.ssl.keyStore and
+                                            -Djavax.net.ssl.keyStorePassword in JAVA_OPTS
+                                            Default: false
+        --enable-compression                Enable GZIP compression on responses
+                                            Default: false
+        --enable-ssl                        Specify -Djavax.net.ssl.trustStore
+                                            and -Djavax.net.ssl.trustStorePassword
+                                            in JAVA_OPTS. Note: should not be used
+                                            if a reverse proxy is terminating SSL
+                                            for you (such as on Heroku)
+                                            Default: false
+        --expand-war                        Expand the war file and set it as
+                                            source
+                                            Default: false
+        --help
+                                            Default: false
+        --path                              The context path
+        --port                              The port that the server will accept
+                                            http requests on.
+                                            Default: 8080
+        --scanBootstrapClassPath            Set jar scanner scan bootstrap
+                                            classpath.
+                                            Default: false
+        --session-store                     Session store to use (valid options
+                                            are 'memcache' or 'redis')
+        --session-store-ignore-pattern      Request pattern to not track
+                                            sessions for. Valid only with memcache
+                                            session store. (default is
+                                            '.*\.(png|gif|jpg|css|js)$'
+                                            Default: .*\.(png|gif|jpg|css|js)$
+        --session-store-locking-mode        Session locking mode for use with
+                                            memcache session store. (default is all)
+                                            Default: all
+        --session-store-operation-timeout   Operation timeout for the memcache
+                                            session store. (default is 5000ms)
+                                            Default: 5000
+        --session-timeout                   The number of minutes of inactivity
+                                            before a user's session is timed out.
+        --shutdown-override                 Overrides the default behavior and
+                                            casues Tomcat to ignore lifecycle failure
+                                            events rather than shutting down when they
+                                            occur.
+                                            Default: false
+        --tomcat-users-location             Location of the tomcat-users.xml
+                                            file. (relative to the location of the
+                                            webapp-runner jar file)
+        --uri-encoding                      Set the URI encoding to be used for
+                                            the Connector.
+        --use-body-encoding-for-uri         Set if the entity body encoding
+                                            should be used for the URI.
+                                            Default: false
+```
+
+### Development
+
+To run the entire suite of integration tests, use the following command:
+
+```
+$ mvn clean install -Pintegration-test
+```
+
+To run an individual integration test, use a command like this:
+
+```
+$ mvn clean install -Pintegration-test
+```
+
 ### License
 
  Copyright (c) 2012, John Simone
