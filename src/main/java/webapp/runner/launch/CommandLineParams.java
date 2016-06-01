@@ -90,7 +90,7 @@ public class CommandLineParams {
     public String tempDirectory = null;
 
     @Parameter(names = "--bind-on-init", description = "Controls when the socket used by the connector is bound. By default it is bound when the connector is initiated and unbound when the connector is destroyed., default value: true")
-    public boolean bindOnInit = true;
+    public boolean bindOnInit;
 
     @Parameter(names = "--proxy-base-url", description = "Set proxy URL if tomcat is running behind reverse proxy")
     public String proxyBaseUrl = "";
